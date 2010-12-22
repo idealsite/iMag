@@ -1,7 +1,6 @@
 /*NOT RELATED STYLES*/
 
-
-.iMag_div {
+.iMag {
   margin: auto;
   border: 1px solid black;
 }

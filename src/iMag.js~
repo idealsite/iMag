@@ -40,9 +40,13 @@ $(document).ready(function(){
     iMag[i].centerTop = iMag[i].maxTop/2;
     iMag[i].arrowLeft = (iMag[i].width - arrowWidth)/2;
     iMag[i].arrowTop = (iMag[i].height -arrowHeight)/2;
-    $(".iMag").eq(i)
-      .wrap('<div class="iMag_div" style="width:'+iMag[i].width+'px; height:'+iMag[i].height+'px;" />')
-      .after('<img src="images/arrow_left.png" class="iMag_arrow" style="left:0px; top:'+iMag[i].arrowTop+'px;" />')
+    $(".iMag").eq(i).wrap('<div class="iMag_div" style="width:'+iMag[i].width+'px; height:'+iMag[i].height+'px;" />');
+var classes = $('.iMag').attr('class').split(' ');
+for(var c in classes)
+{
+    alert(classes[c]);
+}
+    $(".iMag").eq(i).after('<img src="images/arrow_left.png" class="iMag_arrow" style="left:0px; top:'+iMag[i].arrowTop+'px;" />')
       .after('<img src="images/arrow_up.png" class="iMag_arrow" style="left:'+iMag[i].arrowLeft+'px; top:0px;" />')
       .after('<img src="images/arrow_right.png" class="iMag_arrow" style="right:0px; top:'+iMag[i].arrowTop+'px;" />')
       .after('<img src="images/arrow_down.png" class="iMag_arrow" style="left:'+iMag[i].arrowLeft+'px; bottom:0px;" />');
