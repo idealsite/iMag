@@ -1,19 +1,23 @@
 /*NOT RELATED STYLES*/
-
-
-.iMag_div {
+#demo {
+  width: 1080px;
+  height: 400px;
   margin: auto;
   border: 1px solid black;
 }
-
+#demo2 {
+  width: 1040px;
+  height: 300px;
+  margin: auto;
+  border: 1px solid black;
+}
 /*RELATED STYLES*/
-
-.iMag_div {
+.iMag {
+  position: relative;
   overflow: hidden;
   text-align: left;
-  position: relative;
 }
-.iMag {
+.iMag_img {
   position: absolute;
   z-index: 998;
 }
