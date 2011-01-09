@@ -17,11 +17,11 @@
   overflow: hidden;
   text-align: left;
 }
-.iMag_img {
+.iMag_image {
   position: absolute;
   z-index: 998;
 }
-.iMag_arrow {
+.iMag_control {
   position: absolute;
   z-index: 999;
 };
