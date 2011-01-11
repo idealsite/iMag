@@ -1,13 +1,16 @@
 var iMag = [];
-//
+
 //Variables you can change to personalize your iMag
-var controlsWidth = 48; //Change this if you use different icons for the controllers
-var controlsHeight = 48;
-var globalSpeed = 5; //This is the speed assumed in case you don't define one for an iMag, higher numbers return lower speed
-iMag[0] = {}; //Set up the object for the iMag you want to assign speed
-iMag[0].speed = 1; //This way you can set every iMag's speed, higher numbers return lower speed
+var globalControlsWidth = 48; //Change this if you use different icons for the controllers
+var globalControlsHeight = 48;
+var globalSpeed = 2; //This is the speed assumed in case you don't define one for an iMag, higher numbers return lower speed
+iMag[0] = {}; //Set up the object for the iMag you want to assign speed or controllers
+//iMag[0].speed = 1; //This way you can set every iMag's speed, higher numbers return lower speed
 //iMag[1].speed = 10;
-//
+iMag[0].controlsWidth = 32;
+iMag[0].controlsHeight = 32;
+
+//Animation's functions
 function moveRight(caller) {
   var i = $(caller).data("index");
   var speed = (iMag[i].speed) ? iMag[i].speed : globalSpeed;
@@ -45,60 +48,51 @@ function stop(caller) {
   iMag[i].image.stop();
 };
 
-
+//Create iMags
 $(document).ready(function() {
   var number = $(".iMag").size();
   for (var i = 0; i < number; i++) {
-    var div = $(".iMag").eq(i);
-    var image = $(".iMag").eq(i).find("img").eq(0);
-    image.addClass("iMag_image");
     if (!iMag[i]) { iMag[i] = {}; };
-    iMag[i].div = div;
-    iMag[i].image = image;
-    iMag[i].divWidth = div.width();
-    iMag[i].divHeight = div.height();
-    iMag[i].imageWidth = image.width();
-    iMag[i].imageHeight = image.height();
-    iMag[i].xMin = iMag[i].divWidth - iMag[i].imageWidth;
+    iMag[i].div = $(".iMag").eq(i);
+    iMag[i].image = $(".iMag").eq(i).find("img").eq(0);
+    iMag[i].image.addClass("iMag_image");
+    iMag[i].xMin = iMag[i].div.width() - iMag[i].image.width();
     iMag[i].xMax = 0;
-    iMag[i].xCenter = iMag[i].xMin/2;
-    iMag[i].yMin = iMag[i].divHeight - iMag[i].imageHeight;
+    iMag[i].yMin = iMag[i].div.height() - iMag[i].image.height();
     iMag[i].yMax = 0;
-    iMag[i].yCenter = iMag[i].yMin/2;
-    iMag[i].controlsX = (iMag[i].divWidth - controlsWidth)/2;
-    iMag[i].controlsY = (iMag[i].divHeight - controlsHeight)/2;
-    if (div.hasClass("centerX")) {
-      image.css("left", iMag[i].xCenter);
-    };
-    if (div.hasClass("centerY")) {
-      image.css("top", iMag[i].yCenter);
-    };
-    if (div.hasClass("centered")) {
-      image.css({
-        "left": iMag[i].xCenter,
-        "top": iMag[i].yCenter
+    //Define internal controls' positions
+    if (!iMag[i].controlsWidth) { iMag[i].controlsWidth = globalControlsWidth; };
+    if (!iMag[i].controlsHeight) { iMag[i].controlsHeight = globalControlsHeight; };
+    iMag[i].controlsX = (iMag[i].div.width() - iMag[i].controlsWidth)/2;
+    iMag[i].controlsY = (iMag[i].div.height() - iMag[i].controlsHeight)/2;
+    //Centre the image if requested
+    if (iMag[i].div.hasClass("centerX")) { iMag[i].image.css("left", iMag[i].xCenter); };
+    if (iMag[i].div.hasClass("centerY")) { iMag[i].image.css("top", iMag[i].yCenter); };
+    if (iMag[i].div.hasClass("centered")) {
+      iMag[i].image.css({
+        "left": iMag[i].xMin/2,
+        "top": iMag[i].yMin/2
       });
     };
-    iMag[i].leftControl = $('<img src="images/arrow_left.png" class="iMag_control" style="left:0px; top:'+iMag[i].controlsY+'px;" />');
-    iMag[i].upControl = $('<img src="images/arrow_up.png" class="iMag_control" style="left:'+iMag[i].controlsX+'px; top:0px;" />');
-    iMag[i].rightControl = $('<img src="images/arrow_right.png" class="iMag_control" style="right:0px; top:'+iMag[i].controlsY+'px;" />');
-    iMag[i].downControl = $('<img src="images/arrow_down.png" class="iMag_control" style="left:'+iMag[i].controlsX+'px; bottom:0px;" />');
-    image.after(iMag[i].leftControl, iMag[i].upControl, iMag[i].rightControl, iMag[i].downControl);
-    iMag[i].leftControl.data("index", i).bind({
-      mousedown: function() { moveRight(this); },
-      mouseup: function() { stop(this); }
-    });
-    iMag[i].upControl.data("index", i).bind({
-      mousedown: function() { moveDown(this); },
-      mouseup: function() { stop(this); }
-    });
-    iMag[i].rightControl.data("index", i).bind({
-      mousedown: function() { moveLeft(this); },
-      mouseup: function() { stop(this); }
-    });
-    iMag[i].downControl.data("index", i).bind({
-      mousedown: function() { moveUp(this); },
-      mouseup: function() { stop(this); }
-    });
+    //Create or find controllers
+    if ((iMag[i].div.children().size() == 5) && (iMag[i].div.find(".iMag_left")) && (iMag[i].div.find(".iMag_up"))
+    && (iMag[i].div.find(".iMag_right")) && (iMag[i].div.find(".iMag_down"))) {
+      iMag[i].leftControl = iMag[i].div.find(".iMag_left");
+      iMag[i].upControl = iMag[i].div.find(".iMag_up");
+      iMag[i].rightControl = iMag[i].div.find(".iMag_right");
+      iMag[i].downControl = iMag[i].div.find(".iMag_down");
+    } else if (iMag[i].div.children().size() > 0) {
+      iMag[i].div.children().not(".iMag_image").remove();
+      iMag[i].leftControl = $('<img src="images/arrow_left.png" class="iMag_left" style="left:0px; top:'+iMag[i].controlsY+'px;" />');
+      iMag[i].upControl = $('<img src="images/arrow_up.png" class="iMag_up" style="left:'+iMag[i].controlsX+'px; top:0px;" />');
+      iMag[i].rightControl = $('<img src="images/arrow_right.png" class="iMag_right" style="right:0px; top:'+iMag[i].controlsY+'px;" />');
+      iMag[i].downControl = $('<img src="images/arrow_down.png" class="iMag_down" style="left:'+iMag[i].controlsX+'px; bottom:0px;" />');
+      iMag[i].image.after(iMag[i].leftControl, iMag[i].upControl, iMag[i].rightControl, iMag[i].downControl);
+    };
+    //Attach events' handlers
+    iMag[i].leftControl.data("index", i).bind({ mousedown: function() { moveRight(this); }, mouseup: function() { stop(this); } });
+    iMag[i].upControl.data("index", i).bind({ mousedown: function() { moveDown(this); }, mouseup: function() { stop(this); } });
+    iMag[i].rightControl.data("index", i).bind({ mousedown: function() { moveLeft(this); }, mouseup: function() { stop(this); } });
+    iMag[i].downControl.data("index", i).bind({ mousedown: function() { moveUp(this); }, mouseup: function() { stop(this); } });
   };
 });

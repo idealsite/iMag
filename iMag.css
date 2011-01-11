@@ -1,4 +1,4 @@
-/*NOT RELATED STYLES*/
+/*Styles for the demo*/
 #demo {
   width: 1080px;
   height: 400px;
@@ -11,7 +11,7 @@
   margin: auto;
   border: 1px solid black;
 }
-/*RELATED STYLES*/
+/*iMag styles*/
 .iMag {
   position: relative;
   overflow: hidden;
@@ -21,7 +21,7 @@
   position: absolute;
   z-index: 998;
 }
-.iMag_control {
+.iMag_left, .iMag_up, .iMag_right, .iMag_down {
   position: absolute;
   z-index: 999;
 };
