@@ -1,14 +1,18 @@
+//The main var, do not remove it
 var iMag = [];
 
-//Variables you can change to personalize your iMag
-var globalControlsWidth = 48; //Change this if you use different icons for the controllers
+//Default settings
+var globalControlsWidth = 48;
 var globalControlsHeight = 48;
-var globalSpeed = 2; //This is the speed assumed in case you don't define one for an iMag, higher numbers return lower speed
-iMag[0] = {}; //Set up the object for the iMag you want to assign speed or controllers
-//iMag[0].speed = 1; //This way you can set every iMag's speed, higher numbers return lower speed
-//iMag[1].speed = 10;
+var globalSpeed = 2;
+
+//Custom variables
+iMag[0] = {};
+iMag[0].speed = 1;
 iMag[0].controlsWidth = 32;
 iMag[0].controlsHeight = 32;
+
+// ##### MAIN PROGRAM #####
 
 //Animation's functions
 function moveRight(caller) {
@@ -53,28 +57,23 @@ $(document).ready(function() {
   var number = $(".iMag").size();
   for (var i = 0; i < number; i++) {
     if (!iMag[i]) { iMag[i] = {}; };
+    //Find the div and the image
     iMag[i].div = $(".iMag").eq(i);
-    iMag[i].image = $(".iMag").eq(i).find("img").eq(0);
-    iMag[i].image.addClass("iMag_image");
+    iMag[i].image = $(".iMag").eq(i).find("img").eq(0).addClass("iMag_image");
+    //Define max and min positions
     iMag[i].xMin = iMag[i].div.width() - iMag[i].image.width();
-    iMag[i].xMax = 0;
     iMag[i].yMin = iMag[i].div.height() - iMag[i].image.height();
-    iMag[i].yMax = 0;
+    iMag[i].xMax = iMag[i].yMax = 0;
     //Define internal controls' positions
     if (!iMag[i].controlsWidth) { iMag[i].controlsWidth = globalControlsWidth; };
     if (!iMag[i].controlsHeight) { iMag[i].controlsHeight = globalControlsHeight; };
     iMag[i].controlsX = (iMag[i].div.width() - iMag[i].controlsWidth)/2;
     iMag[i].controlsY = (iMag[i].div.height() - iMag[i].controlsHeight)/2;
-    //Centre the image if requested
-    if (iMag[i].div.hasClass("centerX")) { iMag[i].image.css("left", iMag[i].xCenter); };
-    if (iMag[i].div.hasClass("centerY")) { iMag[i].image.css("top", iMag[i].yCenter); };
-    if (iMag[i].div.hasClass("centered")) {
-      iMag[i].image.css({
-        "left": iMag[i].xMin/2,
-        "top": iMag[i].yMin/2
-      });
-    };
-    //Create or find controllers
+    //Centre the image if required
+    if (iMag[i].div.hasClass("centerX")) { iMag[i].image.css("left", iMag[i].xMin/2); };
+    if (iMag[i].div.hasClass("centerY")) { iMag[i].image.css("top", iMag[i].yMin/2); };
+    if (iMag[i].div.hasClass("centered")) { iMag[i].image.css({ "left": iMag[i].xMin/2, "top": iMag[i].yMin/2 }); };
+    //Find or create internal controllers
     if ((iMag[i].div.children().size() == 5) && (iMag[i].div.find(".iMag_left")) && (iMag[i].div.find(".iMag_up"))
     && (iMag[i].div.find(".iMag_right")) && (iMag[i].div.find(".iMag_down"))) {
       iMag[i].leftControl = iMag[i].div.find(".iMag_left");
