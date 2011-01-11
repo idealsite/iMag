@@ -1,7 +1,6 @@
 # iMag by idealsite
 
-
-### To do:
+### To do list:
 - _descrizione interna_
 - _controller modificati interni_
 - _controller modificati esterni_
