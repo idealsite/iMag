@@ -1,9 +1,10 @@
-# iMag
+# iMag by idealsite
 
-### To do
-- descrizione interna
-- controller modificati interni
-- controller modificati esterni
-- controller a comparsa o fissi
-- controller angolari
-- controller a mousedown o a mouseover
+
+### To do:
+- _descrizione interna_
+- _controller modificati interni_
+- _controller modificati esterni_
+- _controller a comparsa o fissi_
+- _controller angolari_
+- _controller a mousedown o a mouseover_
