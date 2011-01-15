@@ -1,16 +1,15 @@
-//The main var, do not remove it
+//The main var, leave it
 var iMag = [];
 
 //Default settings
 var globalControlsWidth = 48;
 var globalControlsHeight = 48;
-var globalSpeed = 2;
+var globalControlsAutoHide = true;
+var globalControlsType = "mousedown"; //Can be "mouseover" or "mousedown"
+var globalSpeed = 4;
 
 //Custom variables
-iMag[0] = {};
-iMag[0].speed = 1;
-iMag[0].controlsWidth = 32;
-iMag[0].controlsHeight = 32;
+//...
 
 // ##### MAIN PROGRAM #####
 
@@ -19,33 +18,25 @@ function moveRight(caller) {
   var i = $(caller).data("index");
   var speed = (iMag[i].speed) ? iMag[i].speed : globalSpeed;
   var time = Math.abs(iMag[i].image.position().left - iMag[i].xMax) * speed;
-  iMag[i].image.animate({
-    left: iMag[i].xMax
-  }, time );
+  iMag[i].image.animate({ left: iMag[i].xMax }, time );
 };
 function moveDown(caller) {
   var i = $(caller).data("index");
   var speed = (iMag[i].speed) ? iMag[i].speed : globalSpeed;
   var time = Math.abs(iMag[i].image.position().top - iMag[i].yMax) * speed;
-  iMag[i].image.animate({
-    top: iMag[i].yMax
-  }, time );
+  iMag[i].image.animate({ top: iMag[i].yMax }, time );
 };
 function moveLeft(caller) {
   var i = $(caller).data("index");
   var speed = (iMag[i].speed) ? iMag[i].speed : globalSpeed;
   var time = Math.abs(iMag[i].image.position().left - iMag[i].xMin) * speed;
-  iMag[i].image.animate({
-    left: iMag[i].xMin
-  }, time );
+  iMag[i].image.animate({ left: iMag[i].xMin }, time );
 };
 function moveUp(caller) {
   var i = $(caller).data("index");
   var speed = (iMag[i].speed) ? iMag[i].speed : globalSpeed;
   var time = Math.abs(iMag[i].image.position().top - iMag[i].yMin) * speed;
-  iMag[i].image.animate({
-    top: iMag[i].yMin
-  }, time );
+  iMag[i].image.animate({ top: iMag[i].yMin }, time );
 };
 function stop(caller) {
   var i = $(caller).data("index");
@@ -89,9 +80,34 @@ $(document).ready(function() {
       iMag[i].image.after(iMag[i].leftControl, iMag[i].upControl, iMag[i].rightControl, iMag[i].downControl);
     };
     //Attach events' handlers
-    iMag[i].leftControl.data("index", i).bind({ mousedown: function() { moveRight(this); }, mouseup: function() { stop(this); } });
-    iMag[i].upControl.data("index", i).bind({ mousedown: function() { moveDown(this); }, mouseup: function() { stop(this); } });
-    iMag[i].rightControl.data("index", i).bind({ mousedown: function() { moveLeft(this); }, mouseup: function() { stop(this); } });
-    iMag[i].downControl.data("index", i).bind({ mousedown: function() { moveUp(this); }, mouseup: function() { stop(this); } });
+    if (iMag[i].div.children().size() > 0) {
+      if (!iMag[i].controlsType) { iMag[i].controlsType = globalControlsType; };
+      if (iMag[i].controlsType == "mousedown") {
+        iMag[i].leftControl.data("index", i).bind({ mousedown: function() { moveRight(this); }, mouseup: function() { stop(this); } });
+        iMag[i].upControl.data("index", i).bind({ mousedown: function() { moveDown(this); }, mouseup: function() { stop(this); } });
+        iMag[i].rightControl.data("index", i).bind({ mousedown: function() { moveLeft(this); }, mouseup: function() { stop(this); } });
+        iMag[i].downControl.data("index", i).bind({ mousedown: function() { moveUp(this); }, mouseup: function() { stop(this); } });
+      } else if (iMag[i].controlsType == "mouseover") {
+        iMag[i].leftControl.data("index", i).bind({ mouseover: function() { moveRight(this); }, mouseout: function() { stop(this); } });
+        iMag[i].upControl.data("index", i).bind({ mouseover: function() { moveDown(this); }, mouseout: function() { stop(this); } });
+        iMag[i].rightControl.data("index", i).bind({ mouseover: function() { moveLeft(this); }, mouseout: function() { stop(this); } });
+        iMag[i].downControl.data("index", i).bind({ mouseover: function() { moveUp(this); }, mouseout: function() { stop(this); } });
+      };
+      if (!iMag[i].controlsAutoHide) { iMag[i].controlsAutoHide = globalControlsAutoHide; };
+      if (iMag[i].controlsAutoHide) {
+        iMag[i].leftControl.css("opacity", 0).bind({
+          mouseover: function() { $(this).stop().fadeTo(400, 1); },
+          mouseout: function() { $(this).stop().fadeTo(600, 0); } });
+        iMag[i].upControl.css("opacity", 0).bind({
+          mouseover: function() { $(this).stop().fadeTo(400, 1); },
+          mouseout: function() { $(this).stop().fadeTo(600, 0); } });
+        iMag[i].rightControl.css("opacity", 0).bind({
+          mouseover: function() { $(this).stop().fadeTo(400, 1); },
+          mouseout: function() { $(this).stop().fadeTo(600, 0); } });
+        iMag[i].downControl.css("opacity", 0).bind({
+          mouseover: function() { $(this).stop().fadeTo(400, 1); },
+          mouseout: function() { $(this).stop().fadeTo(600, 0); } });
+      };
+    };
   };
 });
